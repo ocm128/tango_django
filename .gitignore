@@ -1,0 +1,10 @@
+.directory
+creden.txt
+#local_settings.py
+
+# Python bytecode
+*.pyc
+__pycache_
+
+# Ignorar los siguientes directorios_
+env/
