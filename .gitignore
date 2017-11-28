@@ -6,5 +6,8 @@ creden.txt
 *.pyc
 __pycache_
 
+# sqlite3 db
+db.sqlite3
+
 # Ignorar los siguientes directorios_
 env/
