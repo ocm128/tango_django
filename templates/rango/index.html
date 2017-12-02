@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<!-- It should be added always AFTER the DOCTYPE declaration -->
+{% load staticfiles %}
+
+<html>
+
+    <head>
+        <title>Rango</title>
+        <!-- CSS -->
+        <!--<link rel="stylesheet" href="{% static "css/base.css" %}" /> -->
+        <!-- JavaScript -->
+        <!--<script src="{% static "js/jquery.js" %}"></script> -->
+    </head>
+
+    <body>
+        <h1>Rango says...</h1>
+        <div>hey there partner!</div>
+        <div>
+            {% if categories %}
+            <ul>
+                {% for categorie in categories %}
+                    <li>{{ categorie.name }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>There are no categories present.</strong>
+            {% endif %}
+        </div>
+        <div>
+            <a href="/rango/about/">About</a><br /><br />
+            <img src="{% static 'images/rango-chamaleon.jpg' %}" align="center" alt="Picture of Rango chamaleon"/>
+        </div>
+    </body>
+
+</html>
