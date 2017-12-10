@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- It should be added always AFTER the DOCTYPE declaration -->
 {% load staticfiles %}
+{% load rango_template_tags %}
 
 <html>
     <head lang="es">
@@ -14,6 +15,11 @@
         </title>
     </head>
 <body>
+    <div>
+        {% block sidebar_block %}
+            {% get_category_list category %}
+        {% endblock %}
+    </div>
     <div>
         {% block body_block %}
             This is body_block's default content.
