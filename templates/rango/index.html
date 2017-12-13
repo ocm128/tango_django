@@ -13,11 +13,20 @@
 
     {% block body_block %}
         <div>
+            <hr>
+            <ul>
             {% if user.is_authenticated %}
-                Howdy {{ user.username}}!
+                <li><a href="{% url 'restricted' %}">Restricted Page</a></li>
+                <li><a href="{% url 'logout' %}"></a>Logout</li>
             {% else %}
-                Hey there partner!
+                <li><a href="{% url 'login' %}">Sign In</a></li>
+                <li><a href="{% url 'register' %}">Sign Up</a></li>
             {% endif %}
+                <li><a href="{% url 'add_category' %}">Add a new Category</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'index' %}">Index</a></li>
+            </ul>
+            <hr>
         </div>
         <div>
             <h4>Most Liked Categories</h4>
