@@ -13,16 +13,17 @@
 
     {% block body_block %}
         <div>
-            <hr>
+            <hr>- <p> Visits: {{ visits }}</p><hr>
             <ul>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'restricted' %}">Restricted Page</a></li>
+                <li><a href="{% url 'add_category' %}">Add a new Category</a></li>
                 <li><a href="{% url 'logout' %}"></a>Logout</li>
             {% else %}
                 <li><a href="{% url 'login' %}">Sign In</a></li>
                 <li><a href="{% url 'register' %}">Sign Up</a></li>
             {% endif %}
-                <li><a href="{% url 'add_category' %}">Add a new Category</a></li>
+
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'index' %}">Index</a></li>
             </ul>
@@ -62,4 +63,5 @@
         <div>
             <img src="{% static 'images/rango-chamaleon.jpg' %}" align="center" alt="Picture of Rango chamaleon"/>
         </div>
+
     {% endblock %}
