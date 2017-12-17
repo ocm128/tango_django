@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from rango import views
 
@@ -14,8 +14,8 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
-    #url(r'^logout/$', auth_views.logout, {'next_page': '/rango/login/'}, name='logout'),
     url(r'^restricted/', views.restricted, name='restricted'),
+
 ]
 
 

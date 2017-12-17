@@ -18,7 +18,16 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 
+from registration.backends.simple.views import RegistrationView
+
 from rango import views
+
+
+# Create a new class that redirects the user to the index page
+# if succesful at login
+class MyRegistrationView(RegistrationView):
+    def get_succesful_url(self, request, user):
+        return '/rango/'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -27,4 +36,8 @@ urlpatterns = [
     # to be handled by the rango app
     url(r'^rango/', include('rango.urls')),
     url(r'^admin/', admin.site.urls),
+
+    #Add in this url pattern to override the default pattern in accounts.
+    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

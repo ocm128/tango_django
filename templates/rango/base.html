@@ -28,14 +28,16 @@
         <hr>
     <div>
         <ul>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'add_category' %}">Add Category</a></li>
+            {% if not user.is_authenticated %}
+                <li><a href="{% url 'registration_register' %}">Sign Up</a></li>
+                <li><a href="{% url 'auth_login' %}">Sign In</a></li>
             {% else %}
-                <li><a href="{% url 'register' %}">Register</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'auth_logout' %}?next=/rango/"></a>Logout</li>
             {% endif %}
+                <li><a href="{% url 'add_category' %}">Add Category</a></li>
                 <li><a href="{% url 'about' %}">About</a></li>
                 <li><a href="{% url 'index' %}">Index</a></li>
+
         </ul>
     </div>
 </body>

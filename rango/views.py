@@ -66,8 +66,10 @@ def about(request):
     """if request.session.test_cookie_worked():
         print("TEST COOKIE WORKED!")
         request.session.delete_test_cookie()"""
-
-    return render(request, 'rango/about.html', {})
+    visitor_cookie_handler(request)
+    context_dict = {}
+    context_dict['visits'] = request.session['visits']
+    return render(request, 'rango/about.html', context_dict)
 
 
 def show_category(request, category_name_slug):
@@ -244,6 +246,7 @@ def user_login(request):
         return render(request, 'rango/login.html', {})
 
 
+
 # Use the login_required() decorator to ensure only those logged in can access
 # the view.
 @login_required
@@ -251,6 +254,7 @@ def user_logout(request):
     #Since we know the user is logged in, we can log them out
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
 
 
 # Django's decorator. Python will execute it before executing the code
