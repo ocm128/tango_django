@@ -1,4 +1,5 @@
 .directory
+*.key
 creden.txt
 #local_settings.py
 

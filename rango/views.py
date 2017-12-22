@@ -9,6 +9,7 @@ from datetime import datetime
 
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.bing_search import run_query
 
 
 # A helper method
@@ -70,6 +71,17 @@ def about(request):
     context_dict = {}
     context_dict['visits'] = request.session['visits']
     return render(request, 'rango/about.html', context_dict)
+
+
+def search(request):
+
+    result_list = []
+    if request.method == 'POST':
+        query = request.POST['query'].strip() # strip remove the \n from the end of string
+        if query:
+            result_list = run_query(query)
+    return render(request, 'rango/search.html', {'result_list': result_list})
+
 
 
 def show_category(request, category_name_slug):
