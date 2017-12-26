@@ -25,6 +25,58 @@ def read_bing_key():
     return bing_api_key
 
 
+def run_query(search):
+
+    bing_api_key = read_bing_key()
+    if not bing_api_key:
+        raise KeyError('Bing Key Not Found')
+
+    # Verify the endpoint URI.  At this writing, only one endpoint is used for Bing
+    # search APIs.  In the future, regional endpoints may be available.  If you
+    # encounter unexpected authorization errors, double-check this value against
+    # the endpoint for your Bing Web search instance in your Azure dashboard.
+    results = []
+
+    root_url = 'api.cognitive.microsoft.com'
+    path = '/bing/v7.0/search'
+
+    headers = {'Ocp-Apim-Subscription-Key': bing_api_key}
+    conn = http.client.HTTPSConnection(root_url)
+    query = urllib.parse.quote(search)
+    conn.request("GET", path + "?q=" + query, headers=headers)
+    response = conn.getresponse()
+    headers = [k + ": " + v for (k, v) in response.getheaders()
+        if k.startswith("BingAPIs-") or k.startswith("X-MSEdge-")]
+    #return headers, response.read().decode("utf8")
+
+    respon = response.read().decode("utf8")
+    r = json.loads(respon) # Decoding the JSON (String) to dictionay or List
+    if len(r["webPages"]["value"]):
+            for result in r["webPages"]["value"]:
+                results.append({
+                    'name': result['name'],
+                    'url': result['url'],
+                    'snippet': result['snippet']})
+
+    return results
+
+
+def main():
+    print("Enter a query ")
+    query = input()
+    headers, result = run_query(query)
+    print("\nRelevant HTTP Headers:\n")
+    print("\n".join(headers))
+    print("\nJSON Response:\n")
+
+    # json.dumps enconding a data structure a JSON format. It returns a string
+    print(json.dumps(json.loads(result), indent=4))
+
+if __name__ == '__main__':
+    main()
+
+
+
 """def run_query(search_terms):
 
     bing_api_key = read_bing_key()
@@ -117,40 +169,7 @@ def read_bing_key():
     return results
 """
 
-def run_query(search):
 
-    bing_api_key = read_bing_key()
-    if not bing_api_key:
-        raise KeyError('Bing Key Not Found')
-
-    # Verify the endpoint URI.  At this writing, only one endpoint is used for Bing
-    # search APIs.  In the future, regional endpoints may be available.  If you
-    # encounter unexpected authorization errors, double-check this value against
-    # the endpoint for your Bing Web search instance in your Azure dashboard.
-    results = []
-
-    root_url = 'api.cognitive.microsoft.com'
-    path = '/bing/v7.0/search'
-
-    headers = {'Ocp-Apim-Subscription-Key': bing_api_key}
-    conn = http.client.HTTPSConnection(root_url)
-    query = urllib.parse.quote(search)
-    conn.request("GET", path + "?q=" + query, headers=headers)
-    response = conn.getresponse()
-    headers = [k + ": " + v for (k, v) in response.getheaders()
-        if k.startswith("BingAPIs-") or k.startswith("X-MSEdge-")]
-    #return headers, response.read().decode("utf8")
-
-    respon = response.read().decode("utf8")
-    r = json.loads(respon) # Decoding the JSON (String) to dictionay or List
-    if len(r["webPages"]["value"]):
-            for result in r["webPages"]["value"]:
-                results.append({
-                    'name': result['name'],
-                    'url': result['url'],
-                    'snippet': result['snippet']})
-
-    return results
 
 """
 def main():
@@ -165,16 +184,3 @@ def main():
         print()
 """
 
-def main():
-    print("Enter a query ")
-    query = input()
-    headers, result = run_query(query)
-    print("\nRelevant HTTP Headers:\n")
-    print("\n".join(headers))
-    print("\nJSON Response:\n")
-
-    # json.dumps enconding a data structure a JSON format. It returns a string
-    print(json.dumps(json.loads(result), indent=4))
-
-if __name__ == '__main__':
-    main()

@@ -108,7 +108,42 @@ def show_category(request, category_name_slug):
         # the template will display the "no category" message for us.
         context_dict['category'] = None
         context_dict['pages'] = None
+
+    # create a default query based on the category name
+    # to be shown in the search box
+    """context_dict['query'] = category.name
+    print("dentro de SHOW CATEGORYttttt.............")
+
+    result_list = []
+    if request.method == 'POST':
+
+        query = request.POST['query'].strip()
+        if query:
+            # Run our Webhose function to get the results list!
+
+            result_list = run_query(query)
+            context_dict['query'] = query
+    context_dict['result_list'] = result_list
+
+    return render(request, 'rango/category.html', context_dict)"""
+
+    # OJO, COMPROBAR PORQUE SE REPITE EL REENVIO DEL FORMULARIO
+    #return render(request, 'rango/category.html', context_dict)
+
+    result_list = []
+    if request.method == 'POST':
+        context_dict['query'] = category.name
+        query = request.POST['query'].strip()
+        if query:
+            # Run our Webhose function to get the results list!
+
+            result_list = run_query(query)
+            context_dict['query'] = query
+        context_dict['result_list'] = result_list
+
     return render(request, 'rango/category.html', context_dict)
+
+
 
 @login_required
 def add_category(request):
@@ -122,8 +157,8 @@ def add_category(request):
         if form.is_valid():
 
             # Save the category to the db
-            cat = form.save(commit=True)
-            print(cat)
+            category = form.save(commit=True)
+            print(category, category.slug)
             # Now that the category is saved
             # We could give a confirmation message
             # But since the most recent category added is on the index page
@@ -154,11 +189,15 @@ def add_page(request, category_name_slug):
                 page.category = category
                 page.views = 0
                 page.save()
-                return show_category(request, category_name_slug)
+            print(page.url)
+            print(page.title)
+            print("Dentro de add_page.........................................................")
+            return show_category(request, category_name_slug)
         else:
-            print (form.errors)
 
+            print (form.errors)
     context_dict = {'form': form, 'category': category}
+    print(context_dict)
     return render(request, 'rango/add_page.html', context_dict)
 
 
@@ -215,6 +254,25 @@ def register(request):
                                         'profile_form': profile_form,
                                         'registered': registered})
 
+
+
+def track_url(request):
+
+    page_id = None
+    if request.method == 'GET':
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+    if page_id:
+        try:
+            page = Page.objects.get(id=page_id)
+            page.views = page.views +1
+            page.save()
+            #return redirect(page.url)
+            return HttpResponseRedirect(page.url)
+        except:
+            return HttpResponse("Page id {0} not found". format(page.id))
+    print("No page_id in get string")
+    return redirect(reverse('index'))
 
 
 def user_login(request):
