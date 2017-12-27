@@ -8,8 +8,13 @@ from django.core.urlresolvers import reverse
 from datetime import datetime
 
 from rango.models import Category, Page
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.forms import CategoryForm, PageForm, UserProfileForm #, UserForm
 from rango.bing_search import run_query
+
+from registration.backends.simple.views import RegistrationView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 # A helper method
@@ -83,6 +88,33 @@ def search(request):
     return render(request, 'rango/search.html', {'result_list': result_list})
 
 
+"""
+def show_category(request, category_name_slug):
+
+    context_dict = {}
+    context_dict['result_list'] = None
+    context_dict['query'] = None
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            # Run our Bing function to get the results list!
+            result_list = run_query(query)
+            context_dict['result_list'] = result_list
+            context_dict['query'] = query
+    try:
+        category = Category.objects.get(slug=category_name_slug)
+        context_dict['category_name'] = category.name
+        pages = Page.objects.filter(category=category).order_by('-views')
+        context_dict['pages'] = pages
+        context_dict['category'] = category
+    except Category.DoesNotExist:
+        pass
+    if not context_dict['query']:
+        context_dict['query'] = category.name
+    return render(request, 'rango/category.html', context_dict)
+"""
+
 
 def show_category(request, category_name_slug):
 
@@ -109,6 +141,8 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
         context_dict['pages'] = None
 
+
+    # ESTO ESTABA COMENTADO
     # create a default query based on the category name
     # to be shown in the search box
     """context_dict['query'] = category.name
@@ -125,7 +159,9 @@ def show_category(request, category_name_slug):
             context_dict['query'] = query
     context_dict['result_list'] = result_list
 
-    return render(request, 'rango/category.html', context_dict)"""
+    return render(request, 'rango/category.html', context_dict) """
+
+    # HASTA AQUÍ COMENTADO
 
     # OJO, COMPROBAR PORQUE SE REPITE EL REENVIO DEL FORMULARIO
     #return render(request, 'rango/category.html', context_dict)
@@ -255,7 +291,53 @@ def register(request):
                                         'registered': registered})
 
 
+"""@login_required
+def register_profile(request):
+    form = UserProfileForm()
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            user_profile = form.save(commit=False)
+            user_profile.user = request.user
+            user_profile.save()
 
+            #return redirect('index')
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            print(form.errors)
+
+    context_dict = {'form':form}
+
+    return render(request, 'rango/profile_registration.html', context_dict)
+
+
+@login_required
+def profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('index')
+
+    userprofile = UserProfile.objects.get_or_create(user=user)[0]
+    form = UserProfileForm({'website': userprofile.website, 'picture': userprofile.picture})
+
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('profile', user.username)
+        else:
+            print(form.errors)
+
+    return render(request, 'rango/profile.html', {'userprofile': userprofile, 'selecteduser': user, 'form': form})
+
+
+@login_required
+def list_profiles(request):
+    #user_list = User.objects.all()
+    userprofile_list = UserProfile.objects.all()
+    return render(request, 'rango/list_profiles.html', { 'userprofile_list' : userprofile_list})
+"""
 def track_url(request):
 
     page_id = None

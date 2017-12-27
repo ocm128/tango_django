@@ -43,10 +43,10 @@
               <a class="nav-link" href="{% url 'add_category' %}">Add a New Category</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{#% url 'profile' user.username %}">Profile</a>
+              <a class="nav-link" href="{% url 'profile' user.username %}">Profile</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{#% url 'list_profiles' %}">List Profiles</a>
+              <a class="nav-link" href="{% url 'list_profiles' %}">List Profiles</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'auth_logout' %}?next=/rango/">Logout</a>

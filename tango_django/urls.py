@@ -27,7 +27,9 @@ from rango import views
 # if succesful at login
 class MyRegistrationView(RegistrationView):
     def get_succesful_url(self, request, user):
-        return '/rango/'
+        #return '/rango'
+        #return render(request, 'registration/registration_complete.html', {})
+        return redirect(reverse('index'))
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
