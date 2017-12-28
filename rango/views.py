@@ -39,6 +39,7 @@ def visitor_cookie_handler(request):
         #update the last visit cookie now that we have updated the count
         request.session['last_visit'] = str(datetime.now())
     else:
+        visits = 1
         # set the last visit cookie
         request.session['last_visit'] = last_visit_cookie
     # update/set the visits cookie
@@ -291,7 +292,8 @@ def register(request):
                                         'registered': registered})
 
 
-"""@login_required
+
+@login_required
 def register_profile(request):
     form = UserProfileForm()
     if request.method == 'POST':
@@ -309,6 +311,11 @@ def register_profile(request):
     context_dict = {'form':form}
 
     return render(request, 'rango/profile_registration.html', context_dict)
+
+
+class RangoRegistrationView(RegistrationView):
+    def get_success_url(self, user):
+        return reverse('register_profile')
 
 
 @login_required
@@ -337,7 +344,8 @@ def list_profiles(request):
     #user_list = User.objects.all()
     userprofile_list = UserProfile.objects.all()
     return render(request, 'rango/list_profiles.html', { 'userprofile_list' : userprofile_list})
-"""
+
+
 def track_url(request):
 
     page_id = None

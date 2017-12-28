@@ -27,9 +27,8 @@ from rango import views
 # if succesful at login
 class MyRegistrationView(RegistrationView):
     def get_succesful_url(self, request, user):
-        #return '/rango'
-        #return render(request, 'registration/registration_complete.html', {})
-        return redirect(reverse('index'))
+        return '/rango/'
+
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -40,6 +39,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     #Add in this url pattern to override the default pattern in accounts.
-    url(r'^accounts/register/$', MyRegistrationView.as_view(), name='registration_register'),
+    url(r'^accounts/register/$', views.RangoRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

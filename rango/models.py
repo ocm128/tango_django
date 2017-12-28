@@ -27,17 +27,18 @@ class Page(models.Model):
     views = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.category.name
+        return self.title
 
 
 class UserProfile(models.Model):
 
-    # This line links UserProfile to a User model instance.
+    # This line is required. Links UserProfile to a User model instance.
     user = models.OneToOneField(User)
 
-    # The additional attributes we wish to include
+    # The additional attributes we wish to include.
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
 
-    def __str__():
+    # Override the __unicode__() method to return out something meaningful!
+    def __str__(self):
         return self.user.username
