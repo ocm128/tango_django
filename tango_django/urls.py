@@ -25,10 +25,10 @@ from rango import views
 
 # Create a new class that redirects the user to the index page
 # if succesful at login
-class MyRegistrationView(RegistrationView):
+"""class MyRegistrationView(RegistrationView):
     def get_succesful_url(self, request, user):
         return '/rango/'
-
+"""
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),

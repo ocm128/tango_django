@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
@@ -7,8 +7,8 @@ from django.core.urlresolvers import reverse
 
 from datetime import datetime
 
-from rango.models import Category, Page
-from rango.forms import CategoryForm, PageForm, UserProfileForm #, UserForm
+from rango.models import Category, Page, UserProfile
+from rango.forms import CategoryForm, PageForm, UserProfileForm # UserForm
 from rango.bing_search import run_query
 
 from registration.backends.simple.views import RegistrationView
@@ -88,33 +88,6 @@ def search(request):
             result_list = run_query(query)
     return render(request, 'rango/search.html', {'result_list': result_list})
 
-
-"""
-def show_category(request, category_name_slug):
-
-    context_dict = {}
-    context_dict['result_list'] = None
-    context_dict['query'] = None
-    if request.method == 'POST':
-        query = request.POST['query'].strip()
-
-        if query:
-            # Run our Bing function to get the results list!
-            result_list = run_query(query)
-            context_dict['result_list'] = result_list
-            context_dict['query'] = query
-    try:
-        category = Category.objects.get(slug=category_name_slug)
-        context_dict['category_name'] = category.name
-        pages = Page.objects.filter(category=category).order_by('-views')
-        context_dict['pages'] = pages
-        context_dict['category'] = category
-    except Category.DoesNotExist:
-        pass
-    if not context_dict['query']:
-        context_dict['query'] = category.name
-    return render(request, 'rango/category.html', context_dict)
-"""
 
 
 def show_category(request, category_name_slug):
@@ -209,6 +182,8 @@ def add_category(request):
     # Render the form with error messages (if any).
     return render(request, 'rango/add_category.html', {'form': form})
 
+
+
 @login_required
 def add_page(request, category_name_slug):
 
@@ -238,7 +213,7 @@ def add_page(request, category_name_slug):
     return render(request, 'rango/add_page.html', context_dict)
 
 
-def register(request):
+"""def register(request):
     # A boolean value for telling the template
     # whether the registration was successful.
     # Set to False initially. Code changes value to
@@ -291,7 +266,7 @@ def register(request):
                                         'profile_form': profile_form,
                                         'registered': registered})
 
-
+"""
 
 @login_required
 def register_profile(request):
@@ -311,6 +286,7 @@ def register_profile(request):
     context_dict = {'form':form}
 
     return render(request, 'rango/profile_registration.html', context_dict)
+
 
 
 class RangoRegistrationView(RegistrationView):
@@ -364,7 +340,8 @@ def track_url(request):
     print("No page_id in get string")
     return redirect(reverse('index'))
 
-
+# Commented because of use django-registration-redux
+""""
 def user_login(request):
 
     if request.method == 'POST':
@@ -404,11 +381,12 @@ def user_login(request):
     else:
         # No context variables to pass, blank dictionary object
         return render(request, 'rango/login.html', {})
+"""
 
-
-
+ # COMMENTED BECAUSE OF USE DJANGO-REGISTRATION-REDUX
 # Use the login_required() decorator to ensure only those logged in can access
 # the view.
+"""
 @login_required
 def user_logout(request):
     #Since we know the user is logged in, we can log them out
@@ -423,7 +401,7 @@ def user_logout(request):
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
 
-
+"""
 
 
 
