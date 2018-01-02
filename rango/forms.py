@@ -68,7 +68,7 @@ class PageForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
 
-    website = forms.URLField(required=False)
+    website = forms.URLField(required=False, initial='http://')
     picture = forms.ImageField(required=False)
 
     class Meta:

@@ -340,6 +340,7 @@ def track_url(request):
     print("No page_id in get string")
     return redirect(reverse('index'))
 
+
 # Commented because of use django-registration-redux
 """"
 def user_login(request):

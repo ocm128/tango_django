@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
-from rango import views
+from rango import views, views_ajax
 
 #app_name = 'rango'
 urlpatterns = [
@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^register_profile/$', views.register_profile, name='register_profile'),
     url(r'^profile/(?P<username>[\w\-]+)/$', views.profile, name='profile'),
     url(r'^profiles/$', views.list_profiles, name='list_profiles'),
+    url(r'^like_category/$', views_ajax.like_category, name='like_category'),
 ]
 
 
