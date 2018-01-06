@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,12 +33,12 @@ MEDIA_ROOT = MEDIA_DIR
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&1(c1l&oy&9!w(%hc$grn8a(l&t32h#303x-wt#byord81d%u0'
+SECRET_KEY = 'secretkey'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [127.0.0.1, '.herokuapp.com']
 
 
 # Application definition
@@ -91,10 +92,20 @@ WSGI_APPLICATION = 'tango_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'db_tango',
+        'USER': 'usertango',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
+
+
+# Added for Heroku config
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
 
 # Password hashing functions
 # https://docs.djangoproject.com/en/1.11/topics/auth/passwords/#how-django-stores-passwords

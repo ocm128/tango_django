@@ -1,7 +1,7 @@
 .directory
 *.key
 creden.txt
-#local_settings.py
+local_settings.py
 
 # Python bytecode
 *.pyc
