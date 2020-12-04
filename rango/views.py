@@ -12,7 +12,6 @@ from rango.forms import CategoryForm, PageForm, UserProfileForm # UserForm
 from rango.bing_search import run_query
 
 from registration.backends.simple.views import RegistrationView
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -203,13 +202,13 @@ def add_page(request, category_name_slug):
                 page.save()
             print(page.url)
             print(page.title)
-            print("Dentro de add_page.........................................................")
+            # print("Dentro de add_page.........................................................")
             return show_category(request, category_name_slug)
         else:
 
             print (form.errors)
     context_dict = {'form': form, 'category': category}
-    print(context_dict)
+    # print(context_dict)
     return render(request, 'rango/add_page.html', context_dict)
 
 
